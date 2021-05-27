@@ -1,0 +1,48 @@
+#Script for DNA-seq alignment 11_05_2019
+
+#!/usr/bin/bash
+##submitting to work node=============================================================
+#SBATCH -J hello-world
+#SBATCH -p dev_q
+
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=0:10:00#2:31:00
+#SBATCH --mem-per-cpu=27G
+
+#SBATCH --account=introtogds
+#SBATCH --export=NONE
+
+echo "hello world"
+
+cd $WORK
+mkdir DNA_Practice
+mv Practice $WORK/DNA_Practice
+
+#Indexing the genome using BWA
+
+cd $WORK/DNA_Practice/Practice/data
+module load gcc/6.2.0 bwa/0.7.8
+bwa index -p Castanea_dentata.mainGenome Castanea_dentata.mainGenome.fasta
+
+#Aligning the reads with BWA-MEM
+
+cd $WORK/DNA_Practice/Practice
+
+for f1 in *_1.fq;
+do
+  	f2=${f1%_1.fq};
+
+        f3=$f2"_1.fq"
+        f4=$f2"_2.fq"
+
+        cd $WORK/DNA_Practice/Practice/results/bam
+        mkdir $f2
+
+		bwa -mem -M -t 2 \
+		data/Castanea_dentata.mainGenome \
+		data/$f3 data/$f4 \
+		2> logs/bwa.err \
+		> results/bwa/$f2.sam
+done
+

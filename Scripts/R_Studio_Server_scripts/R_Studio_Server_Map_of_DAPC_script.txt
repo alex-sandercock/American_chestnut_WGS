@@ -1,0 +1,47 @@
+---
+title: "Map of DAPC analysis"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(memisc)
+library(assertthat)
+library(sqldf)
+library(magrittr)
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+library(oz)
+library(scatterpie)
+library(rgdal)
+library(maptools)
+```
+
+```{r}
+#Need to order the dataframe alphabetically
+#df <- table.dapc2[order(table.dapc2$),]
+names(table.dapc2)
+```
+
+
+
+```{r}
+#Initialize packages
+
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(table.dapc2)) {
+  floating.pie(admixture_2pop$Longitude[x],admixture_2pop$Latitude[x],
+  c(table.dapc2$posterior.1[x],table.dapc2$posterior.2[x], table.dapc2$posterior.3[x]),radius=0.5, 
+  col=c("orange","grey", "blue")) 
+}
+
+```

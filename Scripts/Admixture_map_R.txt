@@ -1,0 +1,164 @@
+---
+title: "Map_of_Admixture"
+output: html_notebook
+---
+
+```{r}
+
+```
+
+
+```{r}
+library(memisc)
+library(assertthat)
+library(sqldf)
+library(magrittr)
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+library(oz)
+library(scatterpie)
+library(rgdal)
+library(maptools)
+```
+
+
+```{r}
+#Initialize packages
+
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(admixture_2pop)) {
+  floating.pie(admixture_2pop$Longitude[x],admixture_2pop$Latitude[x],
+  c(admixture_2pop$Pop1[x],admixture_2pop$Pop2[x]),radius=0.5, 
+  col=c("orange","grey")) 
+}
+
+```
+```{r}
+#Initialize packages
+
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps_frame)) {
+  floating.pie(gps_frame$sample_frame.Longitude[x],gps_frame$sample_frame.Latitude[x],
+  c(sample_frame$Plink1[x],sample_frame$Plink2[x],sample_frame$Plink3[x]),radius=0.5, 
+  col=c("orange","grey","blue")) 
+}
+
+```
+
+```{r}
+#Maps of 4,5,6,7,8,9 pops. Used 47 million SNPs and stopped covalescence at 10. Should use ~100,000 SNPs and allow program to run without a limit on covalescence.
+
+#Initialize packages
+#3
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink3$X1[x],plink3$X2[x],plink3$X3[x]),radius=0.5, 
+  col=c("orange","grey","blue")) 
+}
+
+#Initialize packages
+#4
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink4$X1[x],plink4$X2[x],plink4$X3[x],plink4$X4[x]),radius=0.5, 
+  col=c("orange","grey","blue","green")) 
+}
+
+#Initialize packages
+#5
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink5$X1[x],plink5$X2[x],plink5$X3[x],plink5$X4[x],
+    plink5$X5[x]),radius=0.5, 
+  col=c("orange","grey","blue","green","red")) 
+}
+
+#Initialize packages
+#6
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink6$X1[x],plink6$X2[x],plink6$X3[x],plink6$X4[x],
+    plink6$X5[x],plink6$X6[x]),radius=0.5, 
+  col=c("orange","grey","blue","green","red","yellow")) 
+}
+
+#Initialize packages
+#7
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink7$X1[x],plink7$X2[x],plink7$X3[x],plink7$X4[x],
+    plink7$X5[x],plink7$X6[x],plink7$X7[x]),radius=0.5, 
+  col=c("orange","grey","blue","green","red","yellow","purple", "light         blue")) 
+}
+
+#Initialize packages
+#8
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink8$X1[x],plink8$X2[x],plink8$X3[x],plink8$X4[x],
+    plink8$X5[x],plink8$X6[x],plink8$X7[x],plink8$X8[x]),radius=0.5, 
+  col=c("orange","grey","blue","green","red","yellow","purple", "light         blue")) 
+}
+
+#Initialize packages
+#9
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps)) {
+  floating.pie(gps$Longitude[x],gps$Latitude[x],
+  c(plink9$X1[x],plink9$X2[x],plink9$X3[x],plink9$X4[x],
+    plink9$X5[x],plink9$X6[x],plink9$X7[x],plink9$X8[x],plink9$X9[x]),radius=0.5, 
+  col=c("orange","grey","blue","green","red","yellow","purple", "light         blue","brown")) 
+}
+```

@@ -1,0 +1,15 @@
+#To run this software you will do it in a terminal. Not sure how to run in jupyter notebook yet.
+#Refer to https://github.com/kr-colab/popvae/tree/c33d11ce1df1b1c9ec0ee4ed31f27d580fc4ce71
+##Install
+conda create --name popvae python=3.7.7
+conda activate popvae
+git clone https://github.com/cjbattey/popvae.git
+cd popvae
+python setup.py install
+#Make sure you are in proper environment, ie conda activate popvae
+#Make sure that tensorflow is version 1.15. If not, run conda uninstall tensorflow. Then run, conda install tensorflow==1.15.0
+
+##Run
+python popvae.py --infile test_genotypes.vcf --out Out_File_name --seed 42
+
+#Try to run on an interactive gpu node to speed up analysis ie, p100_normal_q

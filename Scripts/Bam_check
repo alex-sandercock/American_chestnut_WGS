@@ -1,0 +1,12 @@
+#Use the below to check the EOF of bam file to make sure it is complete. 
+#It should be something like 00 00 00 00 00 00 00 00 00 01b
+tail problem.bam | hexdump -C
+
+samtools view -H your_file.bam | grep PG
+
+#This displays the readgroup information for the bam files. Focus on PG and CL.
+#This tells you what the program used was, and what the command line was for processing.
+
+#Check if sorted
+
+samtools stats <file.bam> | grep "is sorted:"

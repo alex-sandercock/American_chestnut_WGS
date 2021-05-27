@@ -1,0 +1,15 @@
+#If encounter an issue with compiling angsd, with an error like "error: ‘SIZE_MAX’ was not declared in this scope"
+#Then add in the below script in the file kstring.h in the htslib/htslib folder:
+#Add it directly below the line at the beginning that states "#include <stdint.h>", so the script should now look like:
+
+###############
+
+#include <stdint.h>
+
+#if ! defined SIZE_MAX
+#define SIZE_MAX (4294967295U)
+#endif
+
+###############
+
+#Then save the file, execute <make clean> in the angsd and htslib folder, and then make the folders again.

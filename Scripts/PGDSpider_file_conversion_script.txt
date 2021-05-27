@@ -1,0 +1,16 @@
+#If getting errors, then the vcf may not be able to be zipped, or the -Xmx flag needs to be increased to allow for more memory.
+#Can't use on very large vcf files without a lot of ram. PGDSpider loads the entire input file into ram.
+
+java -Xmx1024m -Xms512M -jar PGDSpider2-cli.jar \
+	-inputfile filename \
+	-inputformat input_file_format (VCF) \
+	-outputfile output_file_name \
+	-outputformat output_file_format (GENEPOP) \
+	-spid spid_file
+
+####On home server
+vcf_path: /work/amsand/Chestnut_Analysis/VCF_files/Chestnut_WGS_ALL_1-96_filtered_remove_fail_maf_0.01_miss_0.9.recode.vcf.gz
+SPID_path:/work/amsand/Chestnut_Analysis/NeEstimator/input_files/vcf2genepop.spid
+output_path:/work/amsand/Chestnut_Analysis/NeEstimator/input_files/Chestnut_1-96_genepop
+PGDSpider_location: /home/amsand/bin/PGDSpider_2.1.1.5/PGDSpider2-cli.jar
+######################

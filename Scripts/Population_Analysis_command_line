@@ -1,0 +1,63 @@
+#can module load zlib and gsl
+#Must install from github raxml, vcftools, and openblas(can be module loaded, openblas/0.3.6)
+
+wget https://data.broadinstitute.org/alkesgroup/EIGENSOFT/EIG-6.1.4.tar.gz
+tar -xvf EIG-6.1.4.tar.gz
+
+wget http://software.genetics.ucla.edu/admixture/binaries/admixture_linux-1.3.0.tar.gz
+tar -xzvf admixture_linux-1.3.0.tar.gz
+
+vcftools --gzvcf Massoko_Dryad_VCF_final_subset_noIndels.vcf.gz --keep littoral.txt --window-pi 100000 --out littoral_pi
+
+$WORK/GenomeAnalysis/bin/vcftools --vcf snps_filtered_remove_fail_maf_0.01_miss_0.9.recode.vcf --site-pi --positions SNP_list.txt --out nucleotide_diversity
+
+#to separate a vcf file into separate vcf files with samples of your choosing
+#Make sample.txt of sample names wanted 
+#Then zip the vcf file
+module load intel/15.3
+module load bcftools/1.2
+
+bgzip file_name.vcf
+
+for file in /path/dir/*.vcf; do
+    bcftools view -Oz -S sample.txt $file > /get/inthis/dir/output_"${i##*/}"_.vcf.gz
+done
+
+#To check the sample names in a vcf file:
+bcftools query -l snp.vcf > sample_names.txt
+
+#--------------------------------------------------------------------
+
+#nucleotide diversity calculation
+zcat input_file.vcf.gz | vcftools --vcf - --site-pi --out nucleotide_diversity
+
+#or use this with a text file of desired samples
+
+vcftools --gzvcf input_file.gz --keep sample_list.txt --window-pi 100000 --out file_name_pi
+#------------------------------------------------------------------
+#Hardy-Weinberg calculation for every site that does not have a missing genotype
+vcftools --gzvcf input_file.vcf.gz --hardy --max-missing 1.0 --out output_noMissing
+
+#-----------------------------------------------------------------------------
+
+#Calculate Fst between the american and chinese chestnut trees
+#chinese_bam.txt is a text file with just the sample names of chinese chestnut trees, same goes for the american_bam
+$WORK/GenomeAnalysis/bin/vcftools --gzvcf snps_filtered_remove_fail_maf_0.01_miss_0.9.recode.vcf.gz --weir-fst-pop chinese_bam.txt --weir-fst-pop american_bam --fst-window-size 100000 --out american_chinese_fst
+
+#------------------------------------------------------------------------------------------------------
+
+#Calculate linkage disequilibrium
+#--ld-window-bp is the option for linkage disequilibrium, and the window size is for how large of chunks of dna should it look at, in this case 50,000 base pairs.
+vcftools --gzvcf Massoko_Dryad_VCF_final_subset_noIndels.vcf.gz --keep littoral.txt --ld-window-bp 500000 --chr scaffold_0 --hap-r2 --out littoral_scaffold_0_ld --min-r2 0.001
+vcftools --gzvcf Massoko_Dryad_VCF_final_subset_noIndels.vcf.gz --keep benthic.txt --ld-window-bp 500000 --chr scaffold_0 --hap-r2 --out benthic_scaffold_0_ld --min-r2 0.001
+
+
+#______________________________________________________________________
+#Using ADMIXTURE
+
+#Create .bed file from vcf using plink
+
+plink --vcf [filename] --make-bed
+
+#
+

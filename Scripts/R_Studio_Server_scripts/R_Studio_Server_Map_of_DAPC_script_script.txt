@@ -1,0 +1,190 @@
+---
+title: "DACP_Practice"
+output: html_notebook
+---
+ 
+
+```{r}
+#install.packages('adegenet')
+#install.packages('rgeos')
+```
+```{r}
+library(memisc)
+library(assertthat)
+library(sqldf)
+library(magrittr)
+library(dplyr)
+library(reshape2)
+library(ggplot2)
+library(oz)
+library(scatterpie)
+library(rgdal)
+library(maptools)
+```
+
+
+```{r}
+# Helper functions
+
+data_prep <- function(csv_name) {
+  
+  import <- read.csv(paste0("./Data/", csv_name), stringsAsFactors = F)
+  names(import) <- tolower(names(import))
+  
+  import <- import[, c("country.or.area",
+                       "sex",
+                       "age",
+                       "cause.of.death..who.",
+                       "record.type",
+                       "value")]
+  
+  names(import) <- c("country", "sex", "age", "death_cause", "record_type", "value")
+  
+  assert_that(length(names(import)) == 6)
+  
+  return(import)
+  
+}
+
+###############
+```
+```{r}
+#Initialize packages
+
+library(maps)
+library(plotrix)
+#gps_frame<-data.frame(sample_frame$Sample_ID,sample_frame$Latitude,sample_frame$Longitude)
+map("state") #Plot maps
+map.axes() #Add axes
+#To add admixture plots - here I used K = 2
+for (x in 1:nrow(gps_frame)) {
+  floating.pie(gps_frame$sample_frame.Longitude[x],gps_frame$sample_frame.Latitude[x],
+  c(sample_frame$Plink1[x],sample_frame$Plink2[x],sample_frame$Plink3[x]),radius=0.5, 
+  col=c("orange","grey","blue")) 
+}
+
+```
+#DAPC Analysis from now on below...
+```{r}
+#DAPC
+getwd()
+#Import VCF files)
+library(vcfR)
+#First made a managemable vcf file be getting a subset with 100,000 SNPs
+chestnut.vcf<-read.vcfR("~/R_Projects/1-96_subsample_100000.vcf")
+#vcf
+```
+```{r}
+#Converting vcf to genlight or genind file for adegenet
+c.genlight<-vcfR2genlight(chestnut.vcf)
+#c.genind<-vcfR2genind(chestnut.vcf)
+
+```
+
+```{r}
+total <- 20
+# create progress bar
+pb <- txtProgressBar(min = 0, max = total, style = 3)
+for(i in 1:total){
+   Sys.sleep(0.1)
+   # update progress bar
+   setTxtProgressBar(pb, i)
+}
+close(pb)
+```
+
+
+
+```{r}
+library(adegenet)
+#add population names as individual names
+pop(c.genlight) <- as.factor(c.genlight@ind.names)
+x <-c.genlight
+#Retain all pca for the find.clusters step. Retain as few as possible while maximizing variance captured for DAPC step.
+grp <- find.clusters(x, max.n.clust=12, n.pca=100, stat = "BIC",parallel = TRUE, choose = FALSE)
+
+```
+
+```{r}
+plot(grp$Kstat, type="o", xlab="number of clusters (K)", ylab="BIC",
+col="blue", main="Detection based on BIC")
+points(2, grp$Kstat[2], pch="x", cex=3)
+mtext(3, tex="'X' indicates the actual number of clusters")
+
+```
+```{r}
+dapc1 <- dapc(x, grp$grp, n.pca=4, n.da = 95, parallel = TRUE)
+#grp1 <- find.clusters(x, n.clust=3, n.pca=100, stat = "BIC",parallel = TRUE, choose = FALSE)
+dapc2 <- dapc(x, grp1$grp,n.pca=4, n.da = 95, parallel = TRUE)
+```
+
+```{r}
+scatter(dapc1,1,1, bg="white",
+scree.da=FALSE, legend=TRUE, solid=.4)
+
+scatter(dapc2,1,1, bg="white",
+scree.da=FALSE, legend=TRUE, solid=.4)
+```
+```{r}
+#DAPC Cross validations
+library("adegenet")
+library("vcfR")
+mat <- as.matrix(c.genlight, method="mean") #<- was as.matrix(na.replace(x, method = "mean"))
+
+grp1 <- pop(c.genlight)
+
+XVAL <- xvalDapc(x, grp1, training.set2 = FALSE)
+```
+```{r}
+set.seed(4)
+contrib <- loadingplot(dapc1$var.contr, thres = 0.07, lab.jitter = 1)
+```
+```{r}
+compoplot(dapc1, posi="bottomright",
+txt.leg=paste("Cluster", 1:6), lab="",
+ncol=1, xlab="individuals", col=funky(6))
+
+optim.a.score(dapc2)
+```
+```{r}
+myPal <- colorRampPalette(c("blue","gold","red"))
+scatter(dapc1, col=transp(myPal(6)), scree.da=FALSE,
+cell=1.5, cex=2, bg="white",cstar=0)
+
+scatter(dapc2, col=transp(myPal(6)), scree.da=FALSE,
+cell=1.5, cex=2, bg="white",cstar=0)
+```
+```{r}
+assignplot(dapc1)
+```
+```{r}
+compoplot(dapc2, posi="bottomright",
+txt.leg=paste("Cluster", 1:3), lab="",
+ncol=1, xlab="individuals", col=funky(3))
+
+```
+```{r}
+
+scatter(dapc1)
+
+myCol <- c("darkblue","purple","green","orange","red","blue")
+scatter(dapc1, posi.da="bottomright", bg="white",
+pch=17:22, cstar=0, col=myCol, scree.pca=TRUE,
+posi.pca="bottomleft")
+
+scatter(dapc1, scree.da=FALSE, bg="white", pch=20, cell=0, col=myCol, cstar=0, solid=.4,
+cex=3,clab=0, leg=TRUE, txt.leg=paste("Cluster",1:2))
+
+```
+
+```{r}
+#Takes DAPC data, converts to data.frame, and exports it to an excell spreadsheet.
+table.dapc2 <- data.frame(predict.dapc(dapc2))
+
+#Export to excel
+#library(xlsx)
+#write.xlsx(mydata, "c:/mydata.xlsx"
+           
+#Export to tab deliminated text file.
+#write.table(mydata, "c:/mydata.txt", sep="\t")
+```

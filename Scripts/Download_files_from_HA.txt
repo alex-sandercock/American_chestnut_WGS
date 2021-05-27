@@ -1,0 +1,1 @@
+wget --user=holliday --password=cheAm367491! --recursive --level=0 -erobots=off --no-parent --timestamping --no-directories --continue --accept=.bz2,.md5 https://hagsc.org/restricted_access/holliday/American_Chestnut_Diversity/Plate3/
