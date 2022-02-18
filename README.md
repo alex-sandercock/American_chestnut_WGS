@@ -6,6 +6,6 @@ The preprint associated with this study can be found at bioRxiv here. The script
 
 - RAiSD_jupyter_notebook contains the jupyter notebook of python scripts associated with the RAiSD method section.
 
--SNP_calling contains the bash scripts needed to generate the SNP datasets used.
+- SNP_calling contains the bash scripts needed to generate the SNP datasets used.
 
--R_notebooks contains the R notebooks used to identify the RAiSD outlier regions and generate the raw figures for this study.
+- R_notebooks contains the R notebooks used to identify the RAiSD outlier regions and generate the raw figures for this study.
