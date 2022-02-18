@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+####### job customization
+## name our process
+##        <----------------------------------------------set the next line
+#PBS -N Pop_C_dentata
+
+#SBATCH -A adaptree
+#SBATCH -p normal_q
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=100
+#SBATCH -t 12:00:00
+####### end of job customization
+#MAF filter 1/2n, so 1/(2*458) = 0.0010917
+bcftools view /work/amsand/VCF/Castanea_reference_and_dentata_samples_461_filtered_remove_fail.vcf.gz \
+	--threads 100 \
+	--min-af 0.00109:minor \
+	--exclude-types indels \
+	--max-alleles 2 \
+	-e 'F_MISSING > 0.1' \
+	--samples-file ^no_seg_or_henry.txt \
+	-o /work/amsand/VCF/Castanea_reference_and_dentata_samples_SNPs_458_no_seg_or_henry_filtered_remove_fail_miss_0.9_maf_0.00109.vcf.gz
+
+
+
+##They were previously merged from filtered vcf files using:
+bcftools merge \
+	--threads 12 \
+	/work/cascades/amsand/Pure_American_Analysis/VCFs/American_chestnut_WGS_384_samples_filtered_remove_fail_miss_0.9.vcf.recode.vcf.gz \
+	Castanea_species_reference_92_filtered_remove_fail_miss_0.9.recode.vcf.gz \
+	-o Castanea_reference_and_dentata_samples_filtered_remove_fail.vcf.gz

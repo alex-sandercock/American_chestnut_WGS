@@ -1,0 +1,7 @@
+#VCF Filtering (this is after the GATK filtering and 0.9% VCF filtering that are in the 05,06,07 scripts)
+
+1. Individuals with greater than 10% missing genotypes were removed (18 samples)
+	#Individuals were identified for having missing data by using vcftools stats and analysing in R.
+2. INDELs were removed to only keep SNPs
+3. MAF was filtered based on 1/2N, where N was the number of individuals retatined (366)
+		#1/(2*366) = 0.00136612 | So, I used 0.001

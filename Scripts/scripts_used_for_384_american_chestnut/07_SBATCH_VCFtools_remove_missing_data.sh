@@ -51,5 +51,6 @@ echo Reads set to $Reads
 
 
 ##Step 5: Finally I use vcftools to filter on missing data (<10%) 
+#Should we also filter out INDELs, so that only SNPs remain?
 path_to_vcftools --vcf snps_filtered_remove_fail.vcf --max-alleles 2 --max-missing 0.9 \
 	--out snps_filtered_remove_fail_miss_0.9 --recode

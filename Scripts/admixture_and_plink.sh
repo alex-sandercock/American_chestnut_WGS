@@ -20,8 +20,17 @@
 	--allow-extra-chr \
 	--autosome
         --out plink
+        ##CCan also use --double-id instead of const-fid if you want a unique fid for each sample instead of all sharing '0' for family ID.
         #Allow-extra-chr includes scaffolds with chromosomes; --autosome then exludes anything outside of the 12 chromosomes
 	#Converting to plink1 format does not allow multi-allelic sites (--max-alleles 2)
+
+#Now we must prune for linkage-disequalibrium
+#"Specifically, the first command targets for removal each SNP that has an R2 value of
+#greater than 0.1 with any other SNP within a 50-SNP sliding window (advanced by 10
+#SNPs each time). The second command copies the remaining (untargetted) SNPs to
+#prunedData.bed."
+plink --bfile rawData --indep-pairwise 50 10 0.1
+plink --bfile rawData --extract plink.prune.in --make-bed --out prunedData
 
 #Next need to alter plink.bim file so that the chromosomes are only labeled with their number
 #Make sure to change the original .bim file to a different name, then change fixed_plink.bim to just plink.bim

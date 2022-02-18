@@ -1,0 +1,18 @@
+#Method for IBDne
+#This program will help to get a proper generational mutation rate for the SMC++ analysis and to have a more accurate demographic history estimate for the last 100 generations.
+#It is accurate to estimate contemporary Ne, but is unreliable after 100 generation. That is where SMC++ is more useful.
+#Should I do this for each ADMIXTURE population? For now, I am only doing it for the entire dentata pop.
+#I think it only works on Human data where there are genetic maps. At the moment, I cannot make a plink map with genetic distances (in centimorgans) for Chestnut
+
+#1. First needed to use bcftools to filtered VCF with no hybrids, removed individuals with >10% missingness, and removed any SNPs with missing data. Also removed any non-SNPs  (INDEls), and retained only bialleleic SNPs.
+#bcftools view -g  ^miss --threads 12 American_chestnut_356_snps_only_filtered_remove_fail_miss_0.9.vcf.gz -o American_chestnut_356_snps_only_filtered_remove_fail_no_miss.vcf.gz
+
+#2. A map file needs to be created in Plink with matching chromosomes to the vcf file. The map file should be made with the cM units option (plink 1.9)
+
+#3. Then needed to phase the vcf file using Beagle (Used beagle 5.2)
+
+#4. hap-ibd is then run to detect identity-by-descent (IBD) segments and homozygosuty-by-descent (HBD) segments.
+#java -Xmx25g -jar hap-ibd.jar nthreads=12 gt=input_phased.vcf.gz map=plink.map out=dentata_356_segments
+
+#5. Run IBDNe
+	-Hint, it gave an estimate of 1e100, so not reliable when using all chromosomes. Also tried only using Chromosome 2, but still had an Ne = 1e29. This was by using default settings and the Cranberry Pruned genetic map.

@@ -1,0 +1,49 @@
+##Methods for EEMS
+##EEMS was first built and compiled per the software manual
+
+#Step 1: Prepare plink bed file from SNP VCF (DO NOT USE A LD PRUNED DATASET - LD is needed for EEMS calculations)
+
+$HOME/bin/plink2 \
+        --vcf /work/C_dentata_WGS/dentata_356_filtered/SMC++/American_chestnut_356_snps_only_filtered_remove_fail_miss_0.9.vcf.gz \
+        --make-bed \
+	--const-fid 0 \
+        --allow-extra-chr \
+	--max-alleles 2 \
+	--autosome \
+        --out plink_356_filtered
+
+#Step 2: Convert plink bed file to EEMS .diffs file using bed2diffs
+
+$HOME/bin/eems/bed2diffs/src/bed2diffs_v1 --bfile ./test/example-SNP-major-mode --nthreads 12
+
+#Step 3: Create habitat coordinates file (datapath.outer)
+
+Go to http://www.birdtheme.org/useful/v3tool.html and click around habitat area to get vertices. 
+#The habitat vertices should be listed counterclockwise and the first vertex should also be the last vertex, so that the outline is a closed ring
+
+#Step 4: Create file with sample coordinates (datapath.coord)
+#Make sure the coordinates are in the same order as the plink .fam file!
+It is just a file with lat and long.
+
+#Step 5: Create parameter file for EEMS
+
+datapath = /work/C_dentata_WGS/dentata_356_filtered/EEMS/plink_356_filtered
+mcmcpath = /work/C_dentata_WGS/dentata_356_filtered/EEMS/results/plink_356_filtered_EEMS_default
+nIndiv = 356
+nSites = 21116005
+nDemes = 200
+diploid = true
+numMCMCIter = 2000000
+numBurnIter = 1000000
+numThinIter = 9999
+
+#Step 6: Run EEMS
+
+./runeems_snps --params parameter_paper_defaults.ini
+
+#specifically, /home/amsand/bin/eems/runeems_snps/src/runeems_snps --params parameter_750_deme_hyperparameter_adjust.ini 
+
+#Step 7: Check output log for % acceptance levels and adjust hyperparameters so that they are between 10-50%
+refer to eems manual for details
+
+#Step 7: rerun with new adjustments and enure more dees are not needed

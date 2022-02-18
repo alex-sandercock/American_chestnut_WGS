@@ -1,0 +1,15 @@
+#First need to prepare vcf file using bcftools, may be able to not use python at all and only use bcftools.
+#Make sure individuals included have less than 10% missing data, otherwise any site that is missing data will be removed.
+#Although a fixed allele is defined as being found in 100% of individuals in a population, should we define a threshold to account for missing data from sequencing?
+
+#Remove header, include only snps, remove any sites that are heterozygous or missing, remove uncalled genotypes
+#Sites that are missing or heterozygous in at least 1 individual will be removed for all.
+bcftools view --no-header American_chestnut_WGS_384_samples_filtered_remove_fail_miss_0.9.vcf.recode.vcf \
+	--genotype ^het \
+	--genotype ^miss \
+	--types snps \
+	--exclude-uncalled \
+	--samples-file ^missing_data_samples.txt \
+	-o subsample_dentata_for_fixed_alleles_1k_snps
+
+#Print out locations and type fore each SNP?

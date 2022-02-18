@@ -1,0 +1,1 @@
+#Found the instructions by Daniel Cook at his website: https://www.danielecook.com/generate-a-bedfile-of-masked-ranges-a-fasta-file/
