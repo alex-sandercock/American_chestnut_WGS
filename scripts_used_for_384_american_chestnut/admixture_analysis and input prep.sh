@@ -8,6 +8,8 @@
 #SBATCH -t 36:00:00
 ####### end of job customization
 
+##This step is to LD prune the dataset.
+# remove each SNP that has an R2 value of greater than 0.1 with any other SNP within a 50-SNP sliding window (advanced by 10 SNPs each time) 
 #--set-missing-var-ids was used to set custom variant ids for each snp so that LD pruning could be performed.
 
 cd /work/amsand/admixture_filtered_dentata
@@ -27,6 +29,11 @@ wait
 wait
 
 /home/amsand/bin/Plink/plink --bfile plink --extract plink.prune.in --make-bed --out prunedData
+
+####The pruneData output files were then converted to a vcf file using plink for input into R for DAPC analysis.
+
+$HOME/bin/plink2 --bfile /work/C_dentata_WGS/dentata_356_prunted/plink_files/prunedData --ref-from-fa /home/amsand/chestnut_genome/Castanea_dentata.mainGenome.fasta --recode vcf id-paste=iid --out dentata_356_pruned
+
 
 ##ADMIXTURE#####
 

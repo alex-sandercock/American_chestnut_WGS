@@ -1,9 +1,0 @@
-#bam merge errors
-
-E::bgzf_read] Read block operation failed with error 4 after 0 of 4 bytes
-samtools index: failed to create index for "/work/newriver/amsand/Pure_American_Analysis/Merge_BAMs/IYLK_PCRfree_96_NCSWAI08_CTAGCGCT_Castanea_dentata.bam": No such file or directory
-[bam_merge] File '/work/newriver/amsand/Pure_American_Analysis/Merge_BAMs/IYLK_PCRfree_96_NCSWAI08_CTAGCGCT_Castanea_dentata.bam' exists. Please apply '-f' to overwrite. Abort.
-[W::bam_hdr_read] EOF marker is absent. The input is probably truncated
-[E::bgzf_read] Read block operation failed with error 4 after 0 of 4 bytes
-samtools index: failed to create index for "/work/newriver/amsand/Pure_American_Analysis/Merge_BAMs/IYLK_PCRfree_96_NCSWAI08_CTAGCGCT_Castanea_dentata.bam": No such file or directory
-[E::hts_open_format] Failed to open file Lane_1_Undetermined_I987_L2.bam
