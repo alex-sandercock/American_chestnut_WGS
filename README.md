@@ -6,8 +6,8 @@ This repository contains the scripts associated with the Sandercock et al., (202
 
 The preprint associated with this study can be found at bioRxiv [here](https://www.biorxiv.org/content/10.1101/2022.02.11.480151v1). The scripts are subdivided into the following directories:
 
-- RAiSD_jupyter_notebook contains the jupyter notebook of python scripts associated with the RAiSD method section.
+- Python_scripts contains the jupyter notebook of python scripts associated with the RAiSD method section.
 
-- SNP_calling contains the bash scripts needed to generate the SNP datasets used.
+- Bash_scripts contains the variant calling scripts needed to generate the SNP datasets.
 
 - R_notebooks contains the R notebooks used to identify the RAiSD outlier regions and generate the raw figures for this study.
