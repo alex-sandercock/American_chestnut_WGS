@@ -8,6 +8,6 @@ The preprint associated with this study can be found at bioRxiv [here](https://w
 
 - Python_scripts contains the jupyter notebook of python scripts associated with the RAiSD method section.
 
-- Bash_scripts contains the variant calling scripts needed to generate the SNP datasets.
+- Variant_calling_pipeline contains the variant calling scripts needed to generate the SNP datasets.
 
 - R_notebooks contains the R notebooks used to identify the RAiSD outlier regions and generate the raw figures for this study.

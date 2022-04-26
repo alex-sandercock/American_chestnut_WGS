@@ -1,6 +1,0 @@
-One other small thing I noticed is you are not filtering on MAF in the last step, but the file name suggests that you are.
-
-path_to_vcftools --vcf snps_filtered_remove_fail.vcf --max-alleles 2 --max-missing 0.9 \
-	--out snps_filtered_remove_fail_maf_0.01_miss_0.9 —recode
-
-I don’t know that a hard MAF filter is always required, but it’s something to think about going forward. One good approach for your data might be to set --maf at a level that discards SNPs that are only observed once (in a heterozygote). So just set maf at a value slightly less than 1/2N where N is the number samples (and there are 2 pairs of chromosomes).

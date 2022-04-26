@@ -1,7 +1,0 @@
-#Copy and paste the below line in the terminal in R studio to produce a barplot for SFS
-#Change the 1 to 0 if it an unfolded sfs. 1 for folded sfs.
-#The "POP" is the assigned name for the population.
-#For any questions refer to: https://github.com/mfumagalli/ngsTools/blob/master/TUTORIAL.md
-
-Rscript /home/amsand/R_analysis/Nucleotide_Diversity/plotSFS.R /work/newriver/amsand/Pure_American_Analysis/Nucleotide_Diversity/smallFolded.sfs POP 1 Chestnut_1-96.sfs.pdf
-evince Chestnut_1-96.sfs.pdf
