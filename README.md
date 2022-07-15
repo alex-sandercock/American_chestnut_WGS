@@ -11,5 +11,5 @@ The preprint associated with this study can be found at bioRxiv [here](https://w
 - Variant_calling_pipeline contains the variant calling scripts needed to generate the SNP datasets.
 
 
-https://zenodo.org/badge/370865419.svg
-https://zenodo.org/badge/latestdoi/370865419
+.. image:: https://zenodo.org/badge/370865419.svg
+   :target: https://zenodo.org/badge/latestdoi/370865419
